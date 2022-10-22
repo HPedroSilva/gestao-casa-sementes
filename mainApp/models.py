@@ -12,13 +12,13 @@ class Especie(models.Model):
 
 class Variedade(models.Model):
     nome = models.CharField("Variedade de semente", max_length=50)
-    tempIdeal = models.DecimalField("Temperatura ideal de armazenamento", max_digits=5, decimal_places=2)
-    umidadeIdeal = models.DecimalField("Umidade ideal de armazenamento", max_digits=5, decimal_places=2)
-    validade = models.DurationField("Tempo máximo de armazenamento")
-    caracteristicas = models.CharField("Características gerais da variedade", max_length=50, blank=True)
-    ciclo = models.DurationField()
+    tempIdeal = models.DecimalField("Temperatura ideal de armazenamento", help_text="Temperatura em °C" , max_digits=5, decimal_places=2)
+    umidadeIdeal = models.DecimalField("Umidade ideal de armazenamento", help_text="Umidade relativa do ambiente em %", max_digits=5, decimal_places=2)
+    validade = models.PositiveIntegerField("Tempo máximo de armazenamento (validade)", help_text="Quantidade de DIAS que essa variedade pode ser armazenada até o plantio")
+    caracteristicas = models.TextField("Características gerais da variedade", max_length=500, blank=True, help_text="Ficha técnica da variedade, descrevendo variados aspectos relacionados, como solos favorávies, irrigação, região, clima favorável, etc.")
+    ciclo = models.PositiveIntegerField(help_text="Quantidade de DIAS do ciclo da variedade")
     imagem = models.ImageField(upload_to='variedades', null=True, blank=True)
-    especie = models.ForeignKey(Especie, on_delete=models.PROTECT)
+    especie = models.ForeignKey(Especie, on_delete=models.PROTECT, verbose_name="espécie")
 
     def __str__(self):
         return str(self.nome)
@@ -54,7 +54,7 @@ class Endereco(models.Model):
 class RegistroEntrada(models.Model):
     data = models.DateTimeField('Data de entrada', default=timezone.now)
     safra = models.DateField('Data de colheita das sementes')
-    descrição = models.CharField('Observações gerais', max_length=300)
+    descricao = models.CharField('Observações gerais', max_length=300)
     guardiao = models.ForeignKey(Guardiao, on_delete=models.PROTECT)
     variedade = models.ForeignKey(Variedade, on_delete=models.PROTECT)
     enderecoGuardiao = models.ForeignKey(Endereco, on_delete=models.PROTECT)
