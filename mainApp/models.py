@@ -47,18 +47,22 @@ class Endereco(models.Model):
     guardiao = models.ForeignKey(Guardiao, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "endereço"
+    
+    def __str__(self):
+        return f"{self.logradouro} {self.bairro}, {self.municipio} - {self.estado}"
 
-class Registro(models.Model):
-    dataEntrada = models.DateTimeField('Data de entrada', default=timezone.now)
+class RegistroEntrada(models.Model):
+    data = models.DateTimeField('Data de entrada', default=timezone.now)
     safra = models.DateField('Data de colheita das sementes')
-    observacoes = models.CharField('Observações gerais', max_length=300)
-    guardiao = models.ForeignKey(Guardiao, on_delete=models.CASCADE)
-    variedade = models.ForeignKey(Variedade, on_delete=models.CASCADE)
+    descrição = models.CharField('Observações gerais', max_length=300)
+    guardiao = models.ForeignKey(Guardiao, on_delete=models.PROTECT)
+    variedade = models.ForeignKey(Variedade, on_delete=models.PROTECT)
+    enderecoGuardiao = models.ForeignKey(Endereco, on_delete=models.PROTECT)
     class Meta:
-        ordering = ['dataEntrada']
+        ordering = ['data']
 
     def __str__(self):
-        return f"{self.variedade} {self.guardiao} {self.dataEntrada}"
+        return f"{self.variedade} {self.guardiao} {self.data}"
 
 class Armario(models.Model):
     nome = models.CharField(max_length=30)
@@ -92,22 +96,25 @@ class Unidade(models.Model):
 
     def __str__(self):
         return str(self.nome)
-class Recipiente(models.Model):
-    qrCode = models.CharField(max_length=300, blank=True)
-    quantidade = models.DecimalField(max_digits=7, decimal_places=2)
-    unidade = models.ForeignKey(Unidade, on_delete=models.PROTECT)
-    registro = models.ForeignKey(Registro, on_delete=models.CASCADE)
-    posicao = models.ForeignKey(Posicao, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.qrCode)
-
-class Saida(models.Model):
+class RegistroSaida(models.Model):
     data = models.DateTimeField('Data da saída', default=timezone.now)
     descricao = models.CharField('Justificativa da saída', max_length=300)
-    recipiente = models.ForeignKey(Recipiente, on_delete=models.CASCADE)
+    destino = models.CharField('Destino', max_length=50)
     class Meta:
-        verbose_name = "saída"
+        verbose_name = "registro de saída"
+class Recipiente(models.Model):
+    quantidade = models.DecimalField(max_digits=7, decimal_places=2)
+    unidade = models.ForeignKey(Unidade, on_delete=models.PROTECT)
+    posicao = models.ForeignKey(Posicao, on_delete=models.CASCADE)
+    registroEntrada = models.ForeignKey(RegistroEntrada, on_delete=models.CASCADE)
+    registroSaida = models.ForeignKey(RegistroSaida, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.pk)
+    
+    def getQrCode(self):
+        pass
+
 
 class TipoTeste(models.Model):
     nome = models.CharField('Nome do tipo de teste', max_length=50)
