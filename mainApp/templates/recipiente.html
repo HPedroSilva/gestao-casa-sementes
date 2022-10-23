@@ -1,0 +1,6 @@
+{% load static %}
+<h2>Registro Entrada: {{recipiente.registroEntrada}}</h2>
+<h2>Quantidade: {{recipiente.quantidade}} {{recipiente.unidade.sigla}}</h2>
+<h2>Posição: {{recipiente.posicao}}</h2>
+<h2>Saída?: {{recipiente.registroSaida}}</h2>
+<img src="{{recipiente.qrCode.url}}" alt="img fails">

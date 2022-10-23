@@ -21,9 +21,10 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("dynamic-admin-form/", include("dynamic_admin_forms.urls")),
+    path('dynamic-admin-form/', include('dynamic_admin_forms.urls')),
+    path('mainapp/', include('mainApp.urls'))
 ]
-print(urlpatterns)
+
 if settings.DEBUG:
     urlpatterns += (static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
     urlpatterns += (static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))

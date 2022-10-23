@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+import qrcode
+from django.core.files import File
+from io import BytesIO
+from PIL import Image
 
 class Especie(models.Model):
     nome = models.CharField("Espécie de semente", max_length=50)
@@ -102,20 +106,28 @@ class RegistroSaida(models.Model):
     destino = models.CharField('Destino', max_length=50)
     class Meta:
         verbose_name = "registro de saída"
+
 class Recipiente(models.Model):
     quantidade = models.DecimalField(max_digits=7, decimal_places=2)
+    qrCode = models.ImageField(upload_to='qrcodes', null=True, blank=True)
     unidade = models.ForeignKey(Unidade, on_delete=models.PROTECT)
     posicao = models.ForeignKey(Posicao, on_delete=models.CASCADE)
     registroEntrada = models.ForeignKey(RegistroEntrada, on_delete=models.CASCADE)
-    registroSaida = models.ForeignKey(RegistroSaida, on_delete=models.PROTECT)
+    registroSaida = models.ForeignKey(RegistroSaida, on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
         return str(self.pk)
     
-    def getQrCode(self):
-        pass
-
-
+    def gerarQrCode(self, url):
+        name = f"{self.id}_qrCode.png"
+        qr = qrcode.QRCode(version = 1, box_size = 10, border = 5)
+        qr.add_data(url)
+        qr.make(fit = True)
+        qr_image = qr.make_image(fill_color = 'red', back_color = 'white')
+        stream = BytesIO()
+        qr_image.save(stream, 'PNG')
+        self.qrCode.save(name, File(stream), save=False)
+        self.save()           
 class TipoTeste(models.Model):
     nome = models.CharField('Nome do tipo de teste', max_length=50)
     descricao = models.CharField('Descrição do tipo de teste', max_length=300)

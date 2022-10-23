@@ -1,15 +1,23 @@
 from django.contrib import admin
 from mainApp.models import *
 from dynamic_admin_forms.admin import DynamicModelAdminMixin
+from django.shortcuts import redirect
+from django.urls import reverse
 class EnderecoInline(admin.StackedInline):
     model = Endereco
     max_num = 3
+@admin.register(Guardiao)
 class GuardiaoAdmin(admin.ModelAdmin):
     inlines = [EnderecoInline,]
 
+class RecipienteInline(admin.StackedInline):
+    model = Recipiente
+    exclude = ["registroSaida", "qrCode"]
+    extra = 1
 @admin.register(RegistroEntrada)
 class RegistroEntradaAdmin(DynamicModelAdminMixin, admin.ModelAdmin):
     fields = ("data", "safra", "descricao", "guardiao", "variedade", "enderecoGuardiao")
+    inlines = [RecipienteInline,]
     dynamic_fields = ("enderecoGuardiao",)
 
     def get_dynamic_enderecoGuardiao_field(self, data):
@@ -24,10 +32,18 @@ class RegistroEntradaAdmin(DynamicModelAdminMixin, admin.ModelAdmin):
                 value = queryset.first()
         hidden = not queryset.exists()
         return queryset, value, hidden
+        
+    def response_add(self, request, obj, post_url_continue=None): # Redirecionar para página de impressão de etiquetas após adicionar um registro
+        return redirect('/admin/sales/invoice')
+    
+    def response_change(self, request, obj):  # Redirecionar para página de impressão de etiquetas após editar um registro
+        recipientes = Recipiente.objects.filter(registroEntrada=obj)
+        for recipiente in recipientes:
+            recipiente.gerarQrCode(request.build_absolute_uri(reverse('mainApp:recipiente', args=[recipiente.id])))
+        return redirect('/admin/sales/invoice')
 
 admin.site.register(Especie)
 admin.site.register(Variedade)
-admin.site.register(Guardiao, GuardiaoAdmin)
 admin.site.register(Armario)
 admin.site.register(Sensor)
 admin.site.register(Posicao)
@@ -35,6 +51,7 @@ admin.site.register(Unidade)
 admin.site.register(RegistroSaida)
 admin.site.register(TipoTeste)
 admin.site.register(Teste)
+admin.site.register(Recipiente)
 
 
 
