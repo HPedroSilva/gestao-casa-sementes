@@ -1,5 +1,11 @@
+{% extends "base_etiquetasRegistro.html" %}
 {% load static %}
+
+{% block conteudo %}
 <h1>Etiquetas do Registro Para Impressão</h1>
-{% for recipiente in recipientes %}
-    <h2>{{recipiente}}</h2>
-{% endfor %}
+    {% for recipiente in recipientes %}
+        {% include "etiqueta.html" %}
+        {% block etiqueta %}
+        {% endblock etiqueta %}
+    {% endfor %}
+{% endblock conteudo %}
