@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Leitura():
     def __init__(self, id, erro, sensorId, temperatura, umidade, data, cloudSaved) -> None:
         self.id = id
@@ -5,7 +7,7 @@ class Leitura():
         self.sensorId = sensorId
         self.temperatura = temperatura
         self.umidade = umidade
-        self.data = data
+        self.data = datetime.strptime(data,"%Y-%m-%dT%H:%M:%S.%fZ")
         self.cloudSaved = cloudSaved
     
     def __str__(self) -> str:
