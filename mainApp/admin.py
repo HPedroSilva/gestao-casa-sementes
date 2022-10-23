@@ -34,13 +34,14 @@ class RegistroEntradaAdmin(DynamicModelAdminMixin, admin.ModelAdmin):
         return queryset, value, hidden
         
     def response_add(self, request, obj, post_url_continue=None): # Redirecionar para página de impressão de etiquetas após adicionar um registro
-        return redirect('/admin/sales/invoice')
+        return redirect(reverse('mainApp:etiquetas_registro_entrada', args=[obj.id]))
     
     def response_change(self, request, obj):  # Redirecionar para página de impressão de etiquetas após editar um registro
+        registroEntrada = obj
         recipientes = Recipiente.objects.filter(registroEntrada=obj)
         for recipiente in recipientes:
             recipiente.gerarQrCode(request.build_absolute_uri(reverse('mainApp:recipiente', args=[recipiente.id])))
-        return redirect('/admin/sales/invoice')
+        return redirect(reverse('mainApp:etiquetas_registro_entrada', args=[obj.id]))
 
 admin.site.register(Especie)
 admin.site.register(Variedade)

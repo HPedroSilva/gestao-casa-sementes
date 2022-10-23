@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from datetime import timedelta
 from django.contrib.auth.models import User
 import qrcode
 from django.core.files import File
@@ -26,7 +27,6 @@ class Variedade(models.Model):
 
     def __str__(self):
         return str(self.nome)
-
 class Guardiao(models.Model):
     identificador = models.CharField("CPF ou CNPJ", max_length=14, unique=True)
     nome = models.CharField("Nome completo", max_length=100)
@@ -67,7 +67,11 @@ class RegistroEntrada(models.Model):
 
     def __str__(self):
         return f"{self.variedade} {self.guardiao} {self.data}"
-
+    
+    @property
+    def dataValidade(self):
+        validade = timedelta(days=self.variedade.validade)
+        return validade + self.data
 class Armario(models.Model):
     nome = models.CharField(max_length=30)
     class Meta:
@@ -123,7 +127,7 @@ class Recipiente(models.Model):
         qr = qrcode.QRCode(version = 1, box_size = 10, border = 5)
         qr.add_data(url)
         qr.make(fit = True)
-        qr_image = qr.make_image(fill_color = 'red', back_color = 'white')
+        qr_image = qr.make_image(fill_color = 'black', back_color = 'white')
         stream = BytesIO()
         qr_image.save(stream, 'PNG')
         self.qrCode.save(name, File(stream), save=False)

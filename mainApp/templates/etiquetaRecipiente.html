@@ -1,0 +1,9 @@
+{% load static %}
+<img src="{{recipiente.qrCode.url}}" alt="img fails">
+<h3>Espécie: {{recipiente.registroEntrada.variedade.especie}}</h3>
+<h3>Variedade: {{recipiente.registroEntrada.variedade}}</h3>
+<h3>Guardião: {{recipiente.registroEntrada.guardiao}}</h3>
+<h3>Quantidade: {{recipiente.quantidade}} {{recipiente.unidade.sigla}}</h3>
+<h3>Data de Entrada: {{recipiente.registroEntrada.data}}</h3>
+<h3>Data de Validade: {{recipiente.registroEntrada.dataValidade}} ({{recipiente.registroEntrada.variedade.validade}} dias)</h3>
+<h3>Posição: {{recipiente.posicao}}</h3>
