@@ -82,6 +82,7 @@ class Armario(models.Model):
 
 class Sensor(models.Model):
     nome = models.CharField(max_length=30)
+    codigoAPI = models.PositiveIntegerField("Código do sensor na API", help_text="Código do sensor na API que recebe as leituras do sistema embarcado de monitoramento.")
     class Meta:
         verbose_name_plural = "sensores"
 
