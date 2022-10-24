@@ -1,4 +1,5 @@
-<h2>Temperatura: {{tempMedia}}</h2>
+{% load static %}
+{% comment %} <h2>Temperatura: {{tempMedia}}</h2>
 <h2>Umidade: {{umidadeMedia}}</h2>
 {% if erroLeitura %}
     <h4>Falha na conexão com a API</h4>
@@ -6,4 +7,65 @@
     {% for i in leituras %}
         <h4>Sensor: {{i.sensorId}}, temp: {{i.temperatura}}, umidade: {{i.umidade}}, {{i.data}}</h4>
     {% endfor %}
-{% endif %}
+{% endif %} {% endcomment %}
+<!DOCTYPE html>
+<html>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        {% comment %} <script type="text/javascript" src="{% static 'chart.js' %}"></script> {% endcomment %}
+    <body> 
+        <div id="chart_div"></div>
+        <script>
+            google.charts.load('current', {'packages': ['line', 'corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+
+                var chartDiv = document.getElementById('chart_div');
+
+                var data = new google.visualization.DataTable();
+                data.addColumn('date', 'Data-Hora');
+                data.addColumn('number', "Temperatura");
+                data.addColumn('number', "Umidade");
+
+                data.addRows([
+                    [new Date(2014, 0), 5, 5.7],
+                ]);
+
+                var materialOptions = {
+                    chart: {
+                        title: 'Temperatura e Umidade no período x a y'
+                    },
+                    width: 900,
+                    height: 500,
+                    series: {
+                        // Gives each series an axis name that matches the Y-axis below.
+                        0: {
+                            axis: 'Temperatura'
+                        },
+                        1: {
+                            axis: 'Umidade'
+                        }
+                    },
+                    axes: {
+                    // Adds labels to each axis; they don't have to match the axis names.
+                        y: {
+                            Temperatura: {
+                                label: 'Temperatura (Celsius)'
+                            },
+                            Umidade: {
+                                label: 'Umidade Relativa (%)'
+                            }
+                        }
+                    }
+                };
+
+                function drawMaterialChart() {
+                    var materialChart = new google.charts.Line(chartDiv);
+                    materialChart.draw(data, materialOptions);
+                }
+
+                drawMaterialChart();
+            }
+        </script>
+    </body>
+</html>
