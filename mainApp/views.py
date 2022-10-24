@@ -53,21 +53,30 @@ class DashboardView(TemplateView):
     template_name = "dashboard.html"
     tempMedia = 0 
     umidadeMedia = 0
-    erroLeitura = False
+    erroLeituras = False
+    erroUltLeituras = False
     leituras = []
+    ultLeituras = []
     def get(self, request, *args, **kwargs):
         try:
             res = requests.get("http://localhost:3000/last?sensores=1,2,3")
-            self.leituras = jsonToLeituras(res.json())
-            self.tempMedia, self.umidadeMedia = calcMedia(self.leituras)
+            self.ultLeituras = jsonToLeituras(res.json())
+            self.tempMedia, self.umidadeMedia = calcMedia(self.ultLeituras)
         except:
-            self.erroLeitura = True
+            self.erroUltLeituras = True
+        try:
+            res = requests.get("http://localhost:3000/all")
+            self.leituras = jsonToLeituras(res.json())
+        except:
+            self.erroLeituras = True
         return super(DashboardView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tempMedia'] = self.tempMedia
         context['umidadeMedia'] = self.umidadeMedia
+        context['ultLeituras'] = self.ultLeituras
         context['leituras'] = self.leituras
-        context['erroLeitura'] = self.erroLeitura
+        context['erroUltLeituras'] = self.erroUltLeituras
+        context['erroLeituras'] = self.erroLeituras
         return context

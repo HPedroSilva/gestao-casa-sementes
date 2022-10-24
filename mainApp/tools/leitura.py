@@ -20,7 +20,7 @@ def jsonToLeituras(json):
     leituras = []
     if json:
         for i in json:
-            if i['erro'] and i['erro'] != "Not found":
+            if i['erro'] and i['erro'] == "OK":
                 leitura = Leitura(i['_id'], i['erro'], i['sensorId'], i['temperatura'], i['umidade'], i['data'], i['cloudSaved'])
                 leituras.append(leitura)
     return leituras

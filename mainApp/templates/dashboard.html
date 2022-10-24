@@ -4,7 +4,7 @@
 {% if erroLeitura %}
     <h4>Falha na conexão com a API</h4>
 {% else %}
-    {% for i in leituras %}
+    {% for i in ultLeituras %}
         <h4>Sensor: {{i.sensorId}}, temp: {{i.temperatura}}, umidade: {{i.umidade}}, {{i.data}}</h4>
     {% endfor %}
 {% endif %} {% endcomment %}
@@ -28,7 +28,9 @@
                 data.addColumn('number', "Umidade");
 
                 data.addRows([
-                    [new Date(2014, 0), 5, 5.7],
+                    {% for i in leituras %}
+                        [new Date(Date.parse("{{i.data|date:"c"}}")), {{i.temperatura}}, {{i.umidade}}],
+                    {% endfor %}
                 ]);
 
                 var materialOptions = {
