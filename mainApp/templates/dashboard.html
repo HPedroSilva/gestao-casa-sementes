@@ -1,18 +1,18 @@
 {% load static %}
-{% comment %} <h2>Temperatura: {{tempMedia}}</h2>
-<h2>Umidade: {{umidadeMedia}}</h2>
-{% if erroLeitura %}
-    <h4>Falha na conexão com a API</h4>
-{% else %}
-    {% for i in ultLeituras %}
-        <h4>Sensor: {{i.sensorId}}, temp: {{i.temperatura}}, umidade: {{i.umidade}}, {{i.data}}</h4>
-    {% endfor %}
-{% endif %} {% endcomment %}
 <!DOCTYPE html>
 <html>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        {% comment %} <script type="text/javascript" src="{% static 'chart.js' %}"></script> {% endcomment %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    {% comment %} <script type="text/javascript" src="{% static 'chart.js' %}"></script> {% endcomment %}
     <body> 
+        <h2>Temperatura: {{tempMedia}}</h2>
+        <h2>Umidade: {{umidadeMedia}}</h2>
+        {% if erroLeitura %}
+            <h4>Falha na conexão com a API</h4>
+        {% else %}
+            {% for i in ultLeituras %}
+                <h4>Sensor: {{i.sensorId}}, temp: {{i.temperatura}}, umidade: {{i.umidade}}, {{i.data}}</h4>
+            {% endfor %}
+        {% endif %}
         <div id="chart_div"></div>
         <script>
             google.charts.load('current', {'packages': ['line', 'corechart']});

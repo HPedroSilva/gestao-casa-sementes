@@ -1,5 +1,4 @@
-from datetime import datetime
-
+from datetime import datetime, timedelta
 class Leitura():
     def __init__(self, id, erro, sensorId, temperatura, umidade, data, cloudSaved) -> None:
         self.id = id
@@ -7,7 +6,8 @@ class Leitura():
         self.sensorId = sensorId
         self.temperatura = temperatura
         self.umidade = umidade
-        self.data = datetime.strptime(data,"%Y-%m-%dT%H:%M:%S.%fZ")
+        teste = datetime.strptime(data,"%Y-%m-%dT%H:%M:%S.%fZ")
+        self.data = teste - timedelta(hours=3)
         self.cloudSaved = cloudSaved
     
     def __str__(self) -> str:
