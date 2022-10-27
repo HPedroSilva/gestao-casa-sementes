@@ -18,11 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls import url
+import notifications.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dynamic-admin-form/', include('dynamic_admin_forms.urls')),
-    path('mainapp/', include('mainApp.urls'))
+    path('mainapp/', include('mainApp.urls')),
+    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]
 
 if settings.DEBUG:

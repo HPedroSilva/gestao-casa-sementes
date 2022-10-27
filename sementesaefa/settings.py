@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'dynamic_admin_forms',
     'django.contrib.admin',
     'mainApp',
+    'notifications', # Deve ficar após os app que utilizarão notificações
 ]
 
 MIDDLEWARE = [

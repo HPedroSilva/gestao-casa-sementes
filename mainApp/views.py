@@ -48,7 +48,8 @@ class EtiquetasRegistroView(TemplateView):
         context['registroEntrada'] = self.registroEntrada
         context['recipientes'] = self.recipientes
         return context
-
+from notifications.signals import notify
+from django.contrib.auth.models import User
 class DashboardView(TemplateView):
     template_name = "dashboard.html"
     tempMedia = 0 
@@ -58,6 +59,8 @@ class DashboardView(TemplateView):
     leituras = []
     ultLeituras = []
     def get(self, request, *args, **kwargs):
+        user = User.objects.get(pk=1)
+        notify.send(user, recipient=user, verb='you reached level 10')
         try:
             res = requests.get("http://localhost:3000/last?sensores=1,2,3")
             self.ultLeituras = jsonToLeituras(res.json())
