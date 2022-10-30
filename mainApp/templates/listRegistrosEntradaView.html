@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Registros de Entrada</h1>
+    <p class="mb-4">Lista de todos os lotes de entrada de sementes.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        {% comment %} <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Título</h6>
+        </div> {% endcomment %}
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Variedade</th>
+                            <th>Guardião</th>
+                            <th>Entrada</th>
+                            <th>Estado</th>
+                            <th>Comunidade</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Variedade</th>
+                            <th>Guardião</th>
+                            <th>Entrada</th>
+                            <th>Estado</th>
+                            <th>Comunidade</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for registroentrada in object_list %}
+                            <tr>
+                                <td>{{ registroentrada.variedade.nome }}</td>
+                                <td>{{ registroentrada.guardiao.nome }}</td>
+                                <td>{{ registroentrada.data|date:"d/m/Y" }}</td>
+                                <td>{{ registroentrada.enderecoGuardiao.estado }}</td>
+                                <td>{{ registroentrada.enderecoGuardiao.comunidade }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

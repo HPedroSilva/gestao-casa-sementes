@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 from mainApp.models import Recipiente, RegistroEntrada
 from django.shortcuts import get_object_or_404
 from mainApp.tools.leitura import jsonToLeituras, calcMedia
@@ -83,7 +84,6 @@ class DashboardView(TemplateView):
         context['erroUltLeituras'] = self.erroUltLeituras
         context['erroLeituras'] = self.erroLeituras
         return context
-class listRegistroEntradaView(TemplateView):
-    template_name = "listRegistroEntradaView.html"
-    def get(self, request, *args, **kwargs):
-        return super(listRegistroEntradaView, self).get(request, *args, **kwargs)
+class listRegistrosEntradaView(ListView):
+    template_name = "listRegistrosEntradaView.html"
+    model = RegistroEntrada
