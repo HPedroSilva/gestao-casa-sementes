@@ -243,7 +243,13 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Temperatura média atual</div>
-                                            <div class="h3 mb-0 font-weight-bold text-gray-800">{{ tempMedia|floatformat:2 }}°C</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800">
+                                                {% if erroUltLeituras %}
+                                                    Falha na leitura.
+                                                {% else %}
+                                                    {{ tempMedia|floatformat:2 }}°C
+                                                {% endif %}
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-temperature-low fa-2x text-gray-300"></i>
@@ -285,21 +291,19 @@
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Últimas Leituras
                                             </div>
                                             <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="mb-0 mr-3 text-gray-800">
-                                                        {% if erroLeitura %}
-                                                            Falha na leitura.
-                                                        {% else %}
-                                                            {% for i in ultLeituras %}
-                                                                Sensor {{i.sensorId}}: {{ i.temperatura|floatformat:2 }}°C, {{ i.umidade|floatformat:2 }}%<br>
-                                                            {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                   
+                                                <div class="mb-0 mr-3 text-gray-800">
+                                                    {% if erroLeitura %}
+                                                        Falha na leitura.
+                                                    {% else %}
+                                                        {% for i in ultLeituras %}
+                                                            Sensor {{i.sensorId}}: {{ i.temperatura|floatformat:2 }}°C, {{ i.umidade|floatformat:2 }}%<br>
+                                                        {% endfor %}
+                                                    {% endif %}
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-table fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
