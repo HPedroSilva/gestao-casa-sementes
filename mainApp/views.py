@@ -1,9 +1,8 @@
-from dataclasses import dataclass
-from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from mainApp.models import Recipiente, RegistroEntrada
 from django.shortcuts import get_object_or_404
 from mainApp.tools.leitura import jsonToLeituras, calcMedia
+from datetime import datetime, timedelta
 import requests
 
 class RecipienteView(TemplateView):
@@ -48,8 +47,6 @@ class EtiquetasRegistroView(TemplateView):
         context['registroEntrada'] = self.registroEntrada
         context['recipientes'] = self.recipientes
         return context
-from notifications.signals import notify
-from django.contrib.auth.models import User
 class DashboardView(TemplateView):
     template_name = "dashboard.html"
     tempMedia = 0 
@@ -59,16 +56,16 @@ class DashboardView(TemplateView):
     leituras = []
     ultLeituras = []
     def get(self, request, *args, **kwargs):
-        user = User.objects.get(pk=1)
-        notify.send(user, recipient=user, verb='you reached level 10')
         try:
+            now = datetime.utcnow().isoformat()
+            yest = (datetime.utcnow() - timedelta(days=1)).isoformat()
             res = requests.get("http://localhost:3000/last?sensores=1,2,3")
             self.ultLeituras = jsonToLeituras(res.json())
             self.tempMedia, self.umidadeMedia = calcMedia(self.ultLeituras)
         except:
             self.erroUltLeituras = True
         try:
-            res = requests.get("http://localhost:3000/all")
+            res = requests.get("http://localhost:3000/last-date?start=2022-10-29&end=2022-10-30")
             self.leituras = jsonToLeituras(res.json())
         except:
             self.erroLeituras = True
