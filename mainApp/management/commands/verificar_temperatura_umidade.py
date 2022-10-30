@@ -1,39 +1,51 @@
 import kronos
 from django.core.management.base import BaseCommand
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.conf import settings
 from mainApp.tools.leitura import jsonToLeituras
 from mainApp.tools.notificacoes import alertaTemperaturaAlta, alertaTemperaturaBaixa, alertaUmidadeAlta, alertaUmidadeBaixa
 import requests
 
-@kronos.register("*/1 * * * *")
+@kronos.register("*/5 * * * *")
 class Command(BaseCommand):
     help=""
-    temp_max = 27.0 # Estabelecer esses valores como valores de configuração do sistema
-    temp_min = 21.0
-    umidade_max = 80.0
-    umidade_min = 50.0
     def handle(self, *args, **options):
         """
         """
-        print("Verificando temperatura e umidade")
-        alertaTemperaturaAlta("leitura")
-
+        # Estabelecer esses valores abaixo como valores de configuração do sistema
+        temp_max = 27.0 
+        temp_min = 21.0
+        umidade_max = 80.0
+        umidade_min = 50.0
+        intervalo_max = timedelta(minutes=5)
+        
+        agora = datetime.now()
+        listTemp = []
+        listUmidade = []
+        
         try:
-            res = requests.get(f"{settings.API_URL}last?sensores=1,2,3") # Mudar os ids dos sensores para uma consulta aos sensores cadastrados.
+            res = requests.get(f"{settings.API_URL}last?sensores=1,2&qtdLeituras=5") # Mudar os ids dos sensores para uma consulta aos sensores cadastrados.
             leituras = jsonToLeituras(res.json())
             for leitura in leituras:
-                print(leitura)
-                print(leitura.temperatura)
-                if(leitura.temperatura < self.temp_min):
-                    alertaTemperaturaBaixa(leitura)
-                elif(leitura.temperatura > self.temp_max):
-                    alertaTemperaturaAlta(leitura)
-                    print("Alerta alta")
+                if(leitura.data > agora - intervalo_max):
+                    print(leitura.data)
+                    listTemp.append(leitura.temperatura)
+                    listUmidade.append(leitura.umidade)
+            
+            if listTemp: # Verificar também porque a lista está vazia e mandar um outro tipo de notificação (não está conseguindo comunicar com a API, por exemplo)
+                tempMedia = sum(listTemp) / len(listTemp)
+            if listUmidade: # Verificar também porque a lista está vazia e mandar um outro tipo de notificação (não está conseguindo comunicar com a API, por exemplo)
+                umidadeMedia = sum(listUmidade) / len(listUmidade)
 
-                if(leitura.umidade < self.umidade_min):
-                    alertaUmidadeBaixa(leitura)
-                elif(leitura.umidade > self.umidade_max):
-                    alertaUmidadeAlta(leitura)
+            if(tempMedia < temp_min):
+                alertaTemperaturaBaixa(tempMedia)
+            elif(tempMedia > temp_max):
+                alertaTemperaturaAlta(tempMedia)
+
+            if(umidadeMedia < umidade_min):
+                alertaUmidadeBaixa(umidadeMedia)
+            elif(umidadeMedia > umidade_max):
+                alertaUmidadeAlta(umidadeMedia)
+        
         except:
             pass # Fazer alguma lógica de notificação de erro com maior prazo (contar quantos erros aconteceram, se passar de um valor determinado manda uma notificação)
