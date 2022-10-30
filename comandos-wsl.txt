@@ -1,0 +1,7 @@
+tail -f /var/log/syslog # Verificar log do sistema e do cron
+cat /var/mail/pedro # Verificar log do postfix
+sudo service rsyslog start # Iniciar rsyslog
+sudo service cron start # Iniciar o cron
+sudo service postgresql start # Iniciar o postgre
+echo "nameserver 8.8.8.8" > /etc/resolv.conf # Configurar DNS
+# Configurar no cron do usuário -> SHELL=/bin/bash
