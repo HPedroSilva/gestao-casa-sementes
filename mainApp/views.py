@@ -83,3 +83,7 @@ class DashboardView(TemplateView):
         context['erroUltLeituras'] = self.erroUltLeituras
         context['erroLeituras'] = self.erroLeituras
         return context
+class listRegistroEntradaView(TemplateView):
+    template_name = "listRegistroEntradaView.html"
+    def get(self, request, *args, **kwargs):
+        return super(listRegistroEntradaView, self).get(request, *args, **kwargs)
