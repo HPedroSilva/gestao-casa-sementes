@@ -57,15 +57,15 @@ class DashboardView(TemplateView):
     ultLeituras = []
     def get(self, request, *args, **kwargs):
         try:
-            now = datetime.utcnow().isoformat()
-            yest = (datetime.utcnow() - timedelta(days=1)).isoformat()
             res = requests.get("http://localhost:3000/last?sensores=1,2,3")
             self.ultLeituras = jsonToLeituras(res.json())
             self.tempMedia, self.umidadeMedia = calcMedia(self.ultLeituras)
         except:
             self.erroUltLeituras = True
         try:
-            res = requests.get("http://localhost:3000/last-date?start=2022-10-29&end=2022-10-30")
+            now = datetime.utcnow().isoformat()
+            yest = (datetime.utcnow() - timedelta(days=1)).isoformat()
+            res = requests.get(f"http://localhost:3000/last-date?start={yest}&end={now}")
             self.leituras = jsonToLeituras(res.json())
         except:
             self.erroLeituras = True
