@@ -62,7 +62,7 @@ class DashboardView(TemplateView):
         user = User.objects.get(pk=1)
         notify.send(user, recipient=user, verb='you reached level 10')
         try:
-            res = requests.get("http://localhost:3000/last?sensores=1,2,3")
+            res = requests.get("http://localhost:3000/last?sensores=1,2,3&qtdLeituras=3")
             self.ultLeituras = jsonToLeituras(res.json())
             self.tempMedia, self.umidadeMedia = calcMedia(self.ultLeituras)
         except:
