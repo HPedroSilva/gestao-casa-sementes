@@ -132,11 +132,13 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
+                    <!-- Relógio -->
+                    <span class="navbar-text h6 font-weight-bold">{% now 'G:i d/m/y' %}</span>
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Alerts -->
-                        {% live_notify_list %}
+                        {% comment %} {% live_notify_list %} {% endcomment %}
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
