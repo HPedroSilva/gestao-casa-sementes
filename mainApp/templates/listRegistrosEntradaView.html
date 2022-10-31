@@ -33,7 +33,7 @@
                     <tbody>
                         {% for registroentrada in object_list %}
                             <tr>
-                                <td>{{ registroentrada.variedade.nome }}</td>
+                                <td><a href="{% url 'mainApp:recipientes' %}?registro={{ registroentrada.pk }}">{{ registroentrada.variedade.nome }}</a></td>
                                 <td>{{ registroentrada.guardiao.nome }}</td>
                                 <td>{{ registroentrada.data|date:"d/m/Y" }}</td>
                                 <td>{{ registroentrada.enderecoGuardiao.estado }}</td>
