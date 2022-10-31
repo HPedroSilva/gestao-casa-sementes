@@ -85,12 +85,33 @@
                     <span>Recipientes</span></a>
             </li>
 
+            <!-- Nav Item - Variedades -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:mainApp_variedade_changelist' %}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Variedades</span></a>
+            </li>
+
+            <!-- Nav Item - Guardiões -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:mainApp_guardiao_changelist' %}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Guardiões</span></a>
+            </li>
+
+            <!-- Nav Item - Testes -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:mainApp_teste_changelist' %}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Testes</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Sistema
+                Sistema/Monitoramento
             </div>
 
             <!-- Nav Item -->
@@ -98,6 +119,20 @@
                 <a class="nav-link" href="{% url 'admin:index' %}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Admin</span></a>
+            </li>
+
+            <!-- Nav Item - Armários -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:mainApp_armario_changelist' %}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Armários</span></a>
+            </li>
+
+            <!-- Nav Item - Sensores -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:mainApp_sensor_changelist' %}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Sensores</span></a>
             </li>
 
             <!-- Divider -->
