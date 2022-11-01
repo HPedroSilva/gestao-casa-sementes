@@ -19,9 +19,11 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import url
+from mainApp.views import DashboardView
 import notifications.urls
 
 urlpatterns = [
+    path('', DashboardView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('dynamic-admin-form/', include('dynamic_admin_forms.urls')),
     path('mainapp/', include('mainApp.urls')),

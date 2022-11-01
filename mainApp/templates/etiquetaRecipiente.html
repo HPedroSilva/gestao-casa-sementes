@@ -1,4 +1,7 @@
+{% extends "base.html" %}
 {% load static %}
-{% include "etiqueta.html" %}
-{% block etiqueta %}
-{% endblock etiqueta %}
+{% block content %}
+    {% include "etiqueta.html" %}
+    {% block etiqueta %}
+    {% endblock etiqueta %}
+{% endblock content %}
