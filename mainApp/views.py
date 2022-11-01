@@ -86,7 +86,7 @@ class DashboardView(TemplateView):
         return context
 
 class RegistrosEntradaView(ListView):
-    template_name = "listRegistrosEntradaView.html"
+    template_name = "listRegistrosEntrada.html"
     model = RegistroEntrada
 class RecipientesView(ListView):
     template_name = "listRecipientes.html"
