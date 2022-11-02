@@ -1,4 +1,5 @@
 from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 from mainApp.models import Recipiente, RegistroEntrada
 from django.shortcuts import get_object_or_404
 from mainApp.tools.leitura import jsonToLeituras, calcMedia
@@ -57,7 +58,7 @@ class DashboardView(TemplateView):
     ultLeituras = []
     def get(self, request, *args, **kwargs):
         try:
-            res = requests.get("http://localhost:3000/last?sensores=1,2,3")
+            res = requests.get("http://localhost:3000/last?sensores=1,2,3&qtdLeituras=3")
             self.ultLeituras = jsonToLeituras(res.json())
             self.tempMedia, self.umidadeMedia = calcMedia(self.ultLeituras)
         except:
@@ -79,4 +80,26 @@ class DashboardView(TemplateView):
         context['leituras'] = self.leituras
         context['erroUltLeituras'] = self.erroUltLeituras
         context['erroLeituras'] = self.erroLeituras
+        return context
+
+class RegistrosEntradaView(ListView):
+    template_name = "listRegistrosEntrada.html"
+    model = RegistroEntrada
+class RecipientesView(ListView):
+    template_name = "listRecipientes.html"
+    model = Recipiente
+    recipientes = []
+    registroEntrada = RegistroEntrada.objects.none
+    def get(self, request, *args, **kwargs):
+        pkRegistroEntrada = int(request.GET.get('registro', 0))
+        if(pkRegistroEntrada):
+            self.registroEntrada = get_object_or_404(RegistroEntrada, pk = pkRegistroEntrada)
+            self.recipientes = self.registroEntrada.recipiente_set.all()
+        return super(RecipientesView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if(self.recipientes):
+            context['object_list'] = self.recipientes
+        context['registroEntrada'] = self.registroEntrada
         return context

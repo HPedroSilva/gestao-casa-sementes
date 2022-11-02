@@ -1,14 +1,40 @@
 {% load static %}
 {% block etiqueta %}
-    <div>
-        <h1>Etiqueta</h1>
-        <img src="{{recipiente.qrCode.url}}" alt="QRCode {{recipiente.qrCode.name}}">
-        <h3>Espécie: {{recipiente.registroEntrada.variedade.especie}}</h3>
-        <h3>Variedade: {{recipiente.registroEntrada.variedade}}</h3>
-        <h3>Guardião: {{recipiente.registroEntrada.guardiao}}</h3>
-        <h3>Quantidade: {{recipiente.quantidade}} {{recipiente.unidade.sigla}}</h3>
-        <h3>Data de Entrada: {{recipiente.registroEntrada.data}}</h3>
-        <h3>Data de Validade: {{recipiente.registroEntrada.dataValidade}} ({{recipiente.registroEntrada.variedade.validade}} dias)</h3>
-        <h3>Posição: {{recipiente.posicao}}</h3>
+    <div class="card mb-4 border-dark">
+        <div class="card-header border-dark h5 font-weight-bold">
+            Recipiente {{recipiente.pk}}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-4">
+                <div class="card-body">
+                    <img class="img-fluid" src="{{recipiente.qrCode.url}}" alt="QRCode {{recipiente.qrCode.name}}">
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="card-body border-dark">
+                    <p class="text-left">
+                        <span class="font-weight-bold">Espécie: </span>{{recipiente.registroEntrada.variedade.especie}}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Variedade: </span>{{recipiente.registroEntrada.variedade}}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Guardião: </span>{{recipiente.registroEntrada.guardiao}}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Quantidade: </span>{{recipiente.quantidade}} {{recipiente.unidade.sigla}}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Data de Entrada: </span>{{ recipiente.registroEntrada.data|date:"d/m/Y" }}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Data de Validade: </span>{{recipiente.registroEntrada.dataValidade|date:"d/m/Y" }} ({{recipiente.registroEntrada.variedade.validade}} dias)
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Posição de Armazenamento: </span>{{recipiente.posicao}}
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock etiqueta %}

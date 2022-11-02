@@ -1,92 +1,167 @@
-{% load static %}
-{% load notifications_tags %}
-<!DOCTYPE html>
-<html>
-    <link rel="stylesheet" href="{% static 'mainApp/css/main.css' %}">
-    <script type="text/javascript" src="{% static '/mainApp/js/chart.js' %}"></script>
-    <script type="text/javascript">oi();</script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    {% comment %} <script type="text/javascript" src="{% static 'chart.js' %}"></script> {% endcomment %}
-    <script type="text/javascript">
-        function my_notification(data) {
-            for (var i=0; i < data.unread_list.length; i++) {
-                msg = data.unread_list[i];
-                console.log(msg);
-            }
-        }
-    </script>
-    <body>
-        <div style="border:solid black;">
-            {% notifications_unread %}
-            {% live_notify_list %}
-            <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
-            {% register_notify_callbacks callbacks='my_notification,fill_notification_list,fill_notification_badge' %}
+{% extends 'base.html' %}
+{% block content %}
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Card Temperatura -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Temperatura média atual</div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800">
+                                {% if erroUltLeituras %}
+                                    Falha na leitura.
+                                {% else %}
+                                    {{ tempMedia|floatformat:2 }}°C
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-temperature-low fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h2>Temperatura: {{tempMedia}}</h2>
-        <h2>Umidade: {{umidadeMedia}}</h2>
-        {% if erroLeitura %}
-            <h4>Falha na conexão com a API</h4>
-        {% else %}
-            {% for i in ultLeituras %}
-                <h4>Sensor: {{i.sensorId}}, temp: {{i.temperatura}}, umidade: {{i.umidade}}, {{i.data}}</h4>
-            {% endfor %}
-        {% endif %}
-        <div id="chart_div"></div>
-        <script>
-            google.charts.load('current', {'packages': ['line', 'corechart']});
-            google.charts.setOnLoadCallback(drawChart);
 
-            function drawChart() {
+        <!-- Card Umidade -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Umidade Média Atual</div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800">
+                                {% if erroUltLeituras %}
+                                    Falha na leitura.
+                                {% else %}
+                                    {{ umidadeMedia|floatformat:2 }}%
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-cloud fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                var chartDiv = document.getElementById('chart_div');
+        <!-- Card Leituras -->
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Últimas Leituras
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="mb-0 mr-3 text-gray-800">
+                                    {% if erroLeitura %}
+                                        Falha na leitura.
+                                    {% else %}
+                                        {% for i in ultLeituras %}
+                                            Sensor {{i.sensorId}}: {{ i.temperatura|floatformat:2 }}°C, {{ i.umidade|floatformat:2 }}%<br>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-table fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                var data = new google.visualization.DataTable();
-                data.addColumn('date', 'Data-Hora');
-                data.addColumn('number', "Temperatura");
-                data.addColumn('number', "Umidade");
+    <!-- Content Row -->
 
-                data.addRows([
-                    {% for i in leituras %}
-                        [new Date(Date.parse("{{i.data|date:"c"}}")), {{i.temperatura}}, {{i.umidade}}],
-                    {% endfor %}
-                ]);
+    <div class="row">
 
-                var materialOptions = {
-                    chart: {
-                        title: 'Temperatura e Umidade no período x a y'
-                    },
-                    width: 900,
-                    curveType: 'function',
-                    height: 500,
-                    series: {
-                        // Gives each series an axis name that matches the Y-axis below.
-                        0: {
-                            axis: 'Temperatura'
-                        },
-                        1: {
-                            axis: 'Umidade'
-                        }
-                    },
-                    axes: {
-                    // Adds labels to each axis; they don't have to match the axis names.
-                        y: {
-                            Temperatura: {
-                                label: 'Temperatura (Celsius)'
-                            },
-                            Umidade: {
-                                label: 'Umidade Relativa (%)'
-                            }
-                        }
-                    }
-                };
+        <!-- Gráfico de temperatura e umidade -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Gráfico de Temperatura e Umidade</h6>
+                    {% comment %} <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        {% comment %} <canvas id="myAreaChart"></canvas> {% endcomment %}
+                        <div id="chart_div" style="height: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                function drawMaterialChart() {
-                    var materialChart =new google.visualization.LineChart(chartDiv);
-                    materialChart.draw(data, materialOptions);
-                }
+        <!-- Gráfico de Sementes -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Gráfico de Sementes</h6>
+                    {% comment %} <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        {% comment %} <canvas id="myPieChart"></canvas> {% endcomment %}
+                        <div id="sementesChart"></div>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Direct
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Social
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Referral
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                drawMaterialChart();
-            }
-        </script>
-    </body>
-</html>
+{% endblock content %}
