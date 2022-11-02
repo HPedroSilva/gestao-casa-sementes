@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+    <script>
+        function imprimir() {window.print();}
+    </script>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Etiqueta do Recipiente Para Impressão</h1>
+        <a onclick="imprimir()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-print fa-md text-white-80"></i> Imprimir</a>
+    </div>
     {% include "etiqueta.html" %}
-    {% block etiqueta %}
-    {% endblock etiqueta %}
 {% endblock content %}
