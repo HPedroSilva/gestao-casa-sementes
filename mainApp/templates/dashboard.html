@@ -139,7 +139,7 @@
                             {% for unidade in unidades %}
                                 <button 
                                     class="btn" 
-                                    onclick="mudarGraficoSemente('sementesChart{{ unidade.id }}')" 
+                                    onclick="mudarGraficoSemente('{{ unidade.id }}')" 
                                     {% if not qtdSementes|dictitem:unidade %}
                                         title="Não existem sementes com essa unidade." disabled 
                                     {% else %} 
@@ -156,6 +156,7 @@
                     <div class="chart-pie" style="height: 100%">
                         {% comment %} <canvas id="myPieChart"></canvas> {% endcomment %}
                         {% for unidade in unidades %}
+                            <small class="form-text text-muted sementesChart" id="sementesUnit{{ unidade.id }}">Quantidade de sementes por variedade em {{unidade.nome}} ({{unidade.sigla}})</small>
                             <div id="sementesChart{{ unidade.id }}" class="sementesChart"></div>
                         {% endfor %}
                     </div>
