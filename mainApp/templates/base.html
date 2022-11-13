@@ -330,26 +330,25 @@
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
         var options = {
-            title: 'My Daily Activities',
+            title: 'Quantidade de Sementes por Variedade',
             pieHole: 0.4,
             'legend': 'none',
             'width': '100%',
             'height': '100%',
-            'chartArea': {top:'5%', left:'5%', height:'100%', width:'100%'},
+            'chartArea': {height:'100%', width:'100%'},
         };
-
-        var chart = new google.visualization.PieChart(document.getElementById('sementesChart'));
-        chart.draw(data, options);
+        /* Gerar um gráfico para cada unidade cadastrada no sistema */
+        {% for unidade, variedades in qtdSementes.items %}
+            var data{{unidade.id}} = google.visualization.arrayToDataTable([
+                ['Variedade', 'Quantidade'],
+                {% for variedade in variedades %}
+                    ['{{variedade.0|safe}}', {{variedade.1|safe}}],
+                {% endfor %}
+            ]);
+            var chart = new google.visualization.PieChart(document.getElementById('sementesChart{{unidade.id}}'));
+            chart.draw(data{{unidade.id}}, options);
+        {% endfor %}
       }
     </script>
     <!-- Notifications Scripts -->

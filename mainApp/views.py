@@ -4,6 +4,7 @@ from mainApp.models import Recipiente, RegistroEntrada
 from django.shortcuts import get_object_or_404
 from mainApp.tools.leitura import jsonToLeituras, calcMedia
 from datetime import datetime, timedelta
+from mainApp.functions import getSementes, getUnidades
 import requests
 
 class RecipienteView(TemplateView):
@@ -80,6 +81,8 @@ class DashboardView(TemplateView):
         context['leituras'] = self.leituras
         context['erroUltLeituras'] = self.erroUltLeituras
         context['erroLeituras'] = self.erroLeituras
+        context['qtdSementes'] = getSementes()
+        context['unidades'] = getUnidades()
         return context
 
 class RegistrosEntradaView(ListView):

@@ -146,11 +146,13 @@
                 <div class="card-body">
                     <div class="chart-pie pt-4 pb-2">
                         {% comment %} <canvas id="myPieChart"></canvas> {% endcomment %}
-                        <div id="sementesChart"></div>
+                        {% for unidade in unidades %}
+                            <div id="sementesChart{{unidade.id}}"></div>
+                        {% endfor %}
                     </div>
-                    <div class="mt-4 text-center small">
+                    {% comment %} <div class="mt-4 text-center small">
                         <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> Direct
+                            <i class="fas fa-circle text-primary"></i> 
                         </span>
                         <span class="mr-2">
                             <i class="fas fa-circle text-success"></i> Social
@@ -158,7 +160,7 @@
                         <span class="mr-2">
                             <i class="fas fa-circle text-info"></i> Referral
                         </span>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
         </div>
