@@ -23,6 +23,7 @@
                             <th>Quantidade</th>
                             <th>Unidade</th>
                             <th>Posição de Armazenamento</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -31,15 +32,20 @@
                             <th>Quantidade</th>
                             <th>Unidade</th>
                             <th>Posição de Armazenamento</th>
+                            <th>Ações</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         {% for recipiente in object_list %}
                             <tr>
-                                <td><a href="{% url 'mainApp:etiqueta_recipiente' recipiente.pk %}">{{ recipiente.pk }}</a></td>
+                                <td><a href="{% url 'admin:mainApp_recipiente_change' recipiente.pk %}">{{ recipiente.pk }}</a></td>
                                 <td>{{ recipiente.quantidade }}</td>
                                 <td>{{ recipiente.unidade.nome }}</td>
                                 <td>{{ recipiente.posicao }}</td>
+                                <td>
+                                    <a href="{% url 'mainApp:etiqueta_recipiente' recipiente.pk %}"><i class="fas fa-print fa-md text-white-80"></i></a>
+                                    <a href="{% url 'admin:mainApp_recipiente_change' recipiente.pk %}"><i class="fas fa-edit fa-md text-white-80"></i></a>
+                                </td>
                                 {% comment %} <td>{{ recipiente.qrcode url }}</td> {% endcomment %}
                             </tr>
                         {% endfor %}
