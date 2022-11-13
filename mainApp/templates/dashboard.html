@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load mainApp_tags %}
 {% block content %}
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -127,27 +128,35 @@
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Gráfico de Sementes</h6>
-                    {% comment %} <div class="dropdown no-arrow">
+                    <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-header">Unidade:</div>
+                            {% for unidade in unidades %}
+                                <button 
+                                    class="btn" 
+                                    onclick="mudarGraficoSemente('sementesChart{{ unidade.id }}')" 
+                                    {% if not qtdSementes|dictitem:unidade %}
+                                        title="Não existem sementes com essa unidade." disabled 
+                                    {% else %} 
+                                        title="Clique para mudar o gráfico para essa unidade." 
+                                    {% endif %}>
+                                    {{ unidade.nome }} ({{unidade.sigla}})
+                                </button>
+                            {% endfor %}
                         </div>
-                    </div> {% endcomment %}
+                    </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
+                <div class="card-body" style="height: 100%">
+                    <div class="chart-pie" style="height: 100%">
                         {% comment %} <canvas id="myPieChart"></canvas> {% endcomment %}
                         {% for unidade in unidades %}
-                            <div id="sementesChart{{unidade.id}}"></div>
+                            <div id="sementesChart{{ unidade.id }}" class="sementesChart"></div>
                         {% endfor %}
                     </div>
                     {% comment %} <div class="mt-4 text-center small">
