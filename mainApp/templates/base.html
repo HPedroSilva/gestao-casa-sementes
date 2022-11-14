@@ -68,12 +68,12 @@
 
             <!-- Nav Item - Registros de Entrada -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRegistrosEntrada"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Registros de Entrada</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseRegistrosEntrada" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{% url 'admin:mainApp_registroentrada_add' %}">Cadastrar</a>
                         <a class="collapse-item" href="{% url 'mainApp:registros_entrada' %}">Listar</a>
@@ -104,11 +104,19 @@
 
             <!-- Nav Item - Testes -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'admin:mainApp_teste_changelist' %}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Testes</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTestes"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Testes</span>
+                </a>
+                <div id="collapseTestes" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{% url 'admin:mainApp_testetransgenia_changelist' %}">Transgenia</a>
+                        <a class="collapse-item" href="{% url 'admin:mainApp_testeumidade_changelist' %}">Umidade</a>
+                        <a class="collapse-item" href="{% url 'admin:mainApp_testegerminacao_changelist' %}">Germinação</a>
+                    </div>
+                </div>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
 
