@@ -1,10 +1,12 @@
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from mainApp.models import Recipiente, RegistroEntrada
+from django.views.generic.edit import FormView, CreateView
+from mainApp.models import Recipiente, RegistroEntrada, RegistroSaida
 from django.shortcuts import get_object_or_404
 from mainApp.tools.leitura import jsonToLeituras, calcMedia
 from datetime import datetime, timedelta
 from mainApp.functions import getSementes, getUnidades
+from mainApp.admin import RegistroSaidaForm
 import requests
 
 class RecipienteView(TemplateView):
@@ -123,3 +125,7 @@ class RecipientesView(ListView):
             context['object_list'] = self.recipientes
         context['registroEntrada'] = self.registroEntrada
         return context
+class CadastroRegistroSaidaView(CreateView):
+    model = RegistroSaida
+    template_name = 'cadastroRegistroSaida.html'
+    form_class = RegistroSaidaForm

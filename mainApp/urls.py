@@ -10,5 +10,6 @@ urlpatterns = [
     path('dashboard/', login_required(views.DashboardView.as_view()), name='dashboard'),
     path('registro-entrada/<int:id_registro>/', login_required(views.RegistroEntradaView.as_view()), name='registro_entrada'),
     path('registros-entrada/', login_required(views.RegistrosEntradaView.as_view()), name='registros_entrada'),
+    path('cadastro-registro-saida/', login_required(views.CadastroRegistroSaidaView.as_view()), name='cadastro_registro_saida'),
     path('recipientes/', login_required(views.RecipientesView.as_view()), name='recipientes'),
 ]
