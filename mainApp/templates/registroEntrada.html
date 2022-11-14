@@ -1,7 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1 class="h3 mb-2 text-gray-800">Registro de Entrada {{ registroEntrada }}</h1>
-    <p class="mb-4">Dados do registro de entrada de sementes (lote) {{ registroEntrada }}: </p>
+    <div class="row">
+        <div class="col-sm-11">
+            <h1 class="h3 mb-2 text-gray-800">Registro de Entrada {{ registroEntrada }}</h1>
+            <p class="mb-4">Dados do registro de entrada de sementes (lote) {{ registroEntrada }}: </p>
+        </div>
+        <div class="col-sm-1">
+            {% comment %} <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i {% endcomment %}
+                {% comment %} class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> {% endcomment %}
+            <button type="button" class="btn btn-link rounded-circle btn-primary" id="dropdownMenuRegistro" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-bars text-white"></i>
+            </button>
+            <div class="dropdown-menu mt-2" aria-labelledby="dropdownMenuRegistro">
+                <a class="dropdown-item" href="#">Realizar Teste de Transgenia</a>
+                <a class="dropdown-item" href="#">Realizar Teste de Umidade</a>
+                <a class="dropdown-item" href="#">Realizar Teste de Germinação</a>
+                <a class="dropdown-item" href="#">Registrar saída de Recipientes</a>
+            </div>
+        </div>
+    </div>
     <div class="card shadow mb-4">
         {% comment %} <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Título</h6>
