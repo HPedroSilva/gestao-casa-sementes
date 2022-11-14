@@ -31,7 +31,7 @@ class Variedade(models.Model):
     tempIdeal = models.DecimalField("Temperatura ideal de armazenamento", help_text="Temperatura em °C" , max_digits=5, decimal_places=2)
     umidadeIdeal = models.DecimalField("Umidade ideal de armazenamento", help_text="Umidade relativa do ambiente em %", max_digits=5, decimal_places=2)
     validade = models.PositiveIntegerField("Tempo máximo de armazenamento (validade)", help_text="Quantidade de DIAS que essa variedade pode ser armazenada até o plantio")
-    caracteristicas = models.TextField("Características gerais da variedade", max_length=500, blank=True, help_text="Ficha técnica da variedade, descrevendo variados aspectos relacionados, como solos favorávies, irrigação, região, clima favorável, etc.")
+    caracteristicas = models.TextField("Características gerais da variedade", max_length=500, blank=True, help_text="Ficha técnica da variedade, descrevendo variados aspectos relacionados, como solos favorávies, irrigação, região, clima favorável, época de plantio, época de colheita, utilização (culinária/medicinal), etc.")
     ciclo = models.PositiveIntegerField(help_text="Quantidade de DIAS do ciclo da variedade")
     especie = models.ForeignKey(Especie, on_delete=models.PROTECT, verbose_name="espécie")
 
@@ -76,7 +76,7 @@ class RegistroEntrada(models.Model):
         ordering = ['data']
 
     def __str__(self):
-        return f"{self.variedade} {self.guardiao} {self.data}"
+        return f"Registro de Entrada {self.pk}"
     
     @property
     def dataValidade(self):
@@ -148,6 +148,7 @@ class Teste(models.Model):
     observacoes = models.CharField('Observações gerais sobre o teste', max_length=300, blank=True)
     local = models.CharField('Local de realização do teste', max_length=50)
     responsavel = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="responsável")
+    registroEntrada = models.ForeignKey(RegistroEntrada, on_delete=models.CASCADE)
 class TesteTransgenia(Teste):
     resultado = models.BooleanField("Transgênico?", default=False)
 
