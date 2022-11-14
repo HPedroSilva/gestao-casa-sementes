@@ -23,6 +23,10 @@ from mainApp.views import DashboardView
 from django.contrib.auth.decorators import login_required
 import notifications.urls
 
+admin.site.site_header = "Casa de Sementes AEFA - Admin"
+admin.site.site_title = "Casa de Sementes AEFA - Admin"
+admin.site.index_title = "Casa de Sementes AEFA - Admin"
+
 urlpatterns = [
     path('', login_required(DashboardView.as_view()), name='index'),
     path('admin/', admin.site.urls),
