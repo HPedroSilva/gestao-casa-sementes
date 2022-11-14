@@ -4,6 +4,11 @@ from dynamic_admin_forms.admin import DynamicModelAdminMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django import forms
+
+class ImagemInline(admin.StackedInline):
+    model = Imagem
+    fields = ("imagem", "descricao")
+    extra = 1
 class EnderecoInline(admin.StackedInline):
     model = Endereco
     max_num = 3
@@ -65,13 +70,22 @@ class RegistroSaidaAdmin(admin.ModelAdmin):
                 recipiente.save()
         super().save_model(request, obj, form, change)
 
+@admin.register(TesteGerminacao)
+class TesteGerminacaoAdmin(admin.ModelAdmin):
+    inlines = [ImagemInline,]
+@admin.register(TesteTransgenia)
+class TesteTransgeniaAdmin(admin.ModelAdmin):
+    inlines = [ImagemInline,]
+@admin.register(TesteUmidade)
+class TesteUmidadeAdmin(admin.ModelAdmin):
+    inlines = [ImagemInline,]
+@admin.register(Variedade)
+class VariedadeAdmin(admin.ModelAdmin):
+    inlines = [ImagemInline,]
+
 admin.site.register(Especie)
-admin.site.register(Variedade)
 admin.site.register(Armario)
 admin.site.register(Sensor)
 admin.site.register(Posicao)
 admin.site.register(Unidade)
-admin.site.register(TesteGerminacao)
-admin.site.register(TesteTransgenia)
-admin.site.register(TesteUmidade)
 admin.site.register(Recipiente)

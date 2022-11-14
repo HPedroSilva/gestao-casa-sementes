@@ -8,10 +8,11 @@ from io import BytesIO
 from PIL import Image
 
 class Imagem(models.Model):
-    imagem = models.ImageField(upload_to='imagens', null=True, blank=True)
+    imagem = models.ImageField(upload_to='imagens')
     descricao = models.CharField('Descrição geral da imagem', max_length=300)
-    registroEntrada = models.ForeignKey('RegistroEntrada', on_delete=models.CASCADE, null=True)
-    teste = models.ForeignKey('Teste', on_delete=models.CASCADE, null=True)
+    registroEntrada = models.ForeignKey('RegistroEntrada', on_delete=models.CASCADE, null=True, blank=True)
+    teste = models.ForeignKey('Teste', on_delete=models.CASCADE, null=True, blank=True)
+    variedade = models.ForeignKey('Variedade', on_delete=models.CASCADE, null=True, blank=True)
     class Meta:
         verbose_name_plural = "imagens"
     
@@ -33,7 +34,6 @@ class Variedade(models.Model):
     caracteristicas = models.TextField("Características gerais da variedade", max_length=500, blank=True, help_text="Ficha técnica da variedade, descrevendo variados aspectos relacionados, como solos favorávies, irrigação, região, clima favorável, etc.")
     ciclo = models.PositiveIntegerField(help_text="Quantidade de DIAS do ciclo da variedade")
     especie = models.ForeignKey(Especie, on_delete=models.PROTECT, verbose_name="espécie")
-    imagem = models.ForeignKey(Imagem, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.nome)
@@ -147,16 +147,16 @@ class Teste(models.Model):
     data = models.DateTimeField('Data de realização do teste', default=timezone.now)
     observacoes = models.CharField('Observações gerais sobre o teste', max_length=300, blank=True)
     local = models.CharField('Local de realização do teste', max_length=50)
-    responsavel = models.ForeignKey(User, on_delete=models.PROTECT)
-class TesteTransgenia(models.Model):
-    resultado = models.BooleanField(default=False)
+    responsavel = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="responsável")
+class TesteTransgenia(Teste):
+    resultado = models.BooleanField("Transgênico?", default=False)
 
     def __str__(self):
         return str(f"Teste de transgenia - {self.pk}")
     class Meta:
         verbose_name = "teste de transgenia"
         verbose_name_plural = "testes de transgenia"
-class TesteUmidade(models.Model):
+class TesteUmidade(Teste):
     resultado = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
@@ -164,7 +164,7 @@ class TesteUmidade(models.Model):
     class Meta:
         verbose_name = "teste de umidade"
         verbose_name_plural = "testes de umidade"
-class TesteGerminacao(models.Model):
+class TesteGerminacao(Teste):
     resultado = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
