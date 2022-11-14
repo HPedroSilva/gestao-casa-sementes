@@ -12,10 +12,10 @@
                 <i class="fa fa-bars text-white"></i>
             </button>
             <div class="dropdown-menu mt-2" aria-labelledby="dropdownMenuRegistro">
-                <a class="dropdown-item" href="#">Realizar Teste de Transgenia</a>
-                <a class="dropdown-item" href="#">Realizar Teste de Umidade</a>
-                <a class="dropdown-item" href="#">Realizar Teste de Germinação</a>
-                <a class="dropdown-item" href="#">Registrar saída de Recipientes</a>
+                <a class="dropdown-item" href="{% url 'admin:mainApp_testetransgenia_add' %}">Registrar Teste de Transgenia</a>
+                <a class="dropdown-item" href="{% url 'admin:mainApp_testeumidade_add' %}">Registrar Teste de Umidade</a>
+                <a class="dropdown-item" href="{% url 'admin:mainApp_testegerminacao_add' %}">Registrar Teste de Germinação</a>
+                <a class="dropdown-item" href="{% url 'admin:mainApp_registrosaida_add' %}">Registrar saída de Recipientes</a>
             </div>
         </div>
     </div>
