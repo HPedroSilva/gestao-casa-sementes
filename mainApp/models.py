@@ -7,6 +7,16 @@ from django.core.files import File
 from io import BytesIO
 from PIL import Image
 
+class Imagem(models.Model):
+    imagem = models.ImageField(upload_to='imagens', null=True, blank=True)
+    descricao = models.CharField('Descrição geral da imagem', max_length=300)
+    registroEntrada = models.ForeignKey('RegistroEntrada', on_delete=models.CASCADE, null=True)
+    teste = models.ForeignKey('Teste', on_delete=models.CASCADE, null=True)
+    class Meta:
+        verbose_name_plural = "imagens"
+    
+    def __str__(self):
+        return str(self.imagem)
 class Especie(models.Model):
     nome = models.CharField("Espécie de semente", max_length=50)
     class Meta:
@@ -22,8 +32,8 @@ class Variedade(models.Model):
     validade = models.PositiveIntegerField("Tempo máximo de armazenamento (validade)", help_text="Quantidade de DIAS que essa variedade pode ser armazenada até o plantio")
     caracteristicas = models.TextField("Características gerais da variedade", max_length=500, blank=True, help_text="Ficha técnica da variedade, descrevendo variados aspectos relacionados, como solos favorávies, irrigação, região, clima favorável, etc.")
     ciclo = models.PositiveIntegerField(help_text="Quantidade de DIAS do ciclo da variedade")
-    imagem = models.ImageField(upload_to='variedades', null=True, blank=True)
     especie = models.ForeignKey(Especie, on_delete=models.PROTECT, verbose_name="espécie")
+    imagem = models.ForeignKey(Imagem, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.nome)
@@ -133,21 +143,32 @@ class Recipiente(models.Model):
         qr_image.save(stream, 'PNG')
         self.qrCode.save(name, File(stream), save=False)
         self.save()           
-class TipoTeste(models.Model):
-    nome = models.CharField('Nome do tipo de teste', max_length=50)
-    descricao = models.CharField('Descrição do tipo de teste', max_length=300)
-    class Meta:
-        verbose_name = "tipo de teste"
-        verbose_name_plural = "tipos de teste"
-
-    def __str__(self):
-        return str(self.nome)
-
 class Teste(models.Model):
-    resultado = models.CharField('Resultado do teste', max_length=50)
     data = models.DateTimeField('Data de realização do teste', default=timezone.now)
     observacoes = models.CharField('Observações gerais sobre o teste', max_length=300, blank=True)
     local = models.CharField('Local de realização do teste', max_length=50)
-    imagem = models.ImageField(upload_to='testes', null=True, blank=True)
-    tipoTeste = models.ForeignKey(TipoTeste, on_delete=models.PROTECT)
     responsavel = models.ForeignKey(User, on_delete=models.PROTECT)
+class TesteTransgenia(models.Model):
+    resultado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(f"Teste de transgenia - {self.pk}")
+    class Meta:
+        verbose_name = "teste de transgenia"
+        verbose_name_plural = "testes de transgenia"
+class TesteUmidade(models.Model):
+    resultado = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return str(f"Teste de umidade - {self.pk}")
+    class Meta:
+        verbose_name = "teste de umidade"
+        verbose_name_plural = "testes de umidade"
+class TesteGerminacao(models.Model):
+    resultado = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return str(f"Teste de germinação - {self.pk}")
+    class Meta:
+        verbose_name = "teste de germinação"
+        verbose_name_plural = "testes de germinação"
