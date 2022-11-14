@@ -23,7 +23,7 @@ class RecipienteInline(admin.StackedInline):
 @admin.register(RegistroEntrada)
 class RegistroEntradaAdmin(DynamicModelAdminMixin, admin.ModelAdmin):
     fields = ("data", "safra", "descricao", "guardiao", "variedade", "enderecoGuardiao")
-    inlines = [RecipienteInline,]
+    inlines = [RecipienteInline, ImagemInline, ]
     dynamic_fields = ("enderecoGuardiao",)
 
     def get_dynamic_enderecoGuardiao_field(self, data):

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="h3 mb-2 text-gray-800">Registro de Entrada {{ registroEntrada }}</h1>
+    <p class="mb-4">Dados do registro de entrada de sementes (lote) {{ registroEntrada }}: </p>
+    <div class="card shadow mb-4">
+        {% comment %} <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Título</h6>
+        </div> {% endcomment %}
+        <div class="row no-gutters">
+            <div class="col-4">
+                <div class="card-body">
+                    {% with image=registroEntrada.imagem_set.all|first %}
+                        <img class="img-fluid" src="{{ image.imagem.url }}" alt="img">
+                    {% endwith %} 
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="card-body">
+                    <p class="text-left">
+                        <span class="font-weight-bold">Espécie: </span>{{registroEntrada.variedade.especie}}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Variedade: </span>{{registroEntrada.variedade}}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Guardião: </span>{{registroEntrada.guardiao}}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Data de Entrada: </span>{{ registroEntrada.data|date:"d/m/Y" }}
+                    </p>
+                    <p class="text-left">
+                        <span class="font-weight-bold">Data de Validade: </span>{{registroEntrada.dataValidade|date:"d/m/Y" }} ({{registroEntrada.variedade.validade}} dias)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <hr class="mt-4 mb-4"/>
+
+    {% include 'listRecipientesIncorporar.html' %}
+
+    <hr class="mt-4 mb-4"/>
+
+    <h1 class="h3 mb-2 text-gray-800">Testes</h1>
+    <p class="mb-4">Testes do registro de entrada de sementes (lote) {{ registroEntrada }}: </p>
+    <hr class="mt-4 mb-4"/>
+{% endblock content %}

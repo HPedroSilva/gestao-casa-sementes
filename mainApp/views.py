@@ -85,6 +85,23 @@ class DashboardView(TemplateView):
         context['unidades'] = getUnidades()
         return context
 
+class RegistroEntradaView(TemplateView):
+    template_name = "registroEntrada.html"
+    recipientes = []
+    registroEntrada = RegistroEntrada.objects.none
+    def get(self, request, *args, **kwargs):
+        pkRegistroEntrada = int(kwargs.get('id_registro', 0))
+        if(pkRegistroEntrada):
+            self.registroEntrada = get_object_or_404(RegistroEntrada, pk = pkRegistroEntrada)
+            self.recipientes = self.registroEntrada.recipiente_set.all()
+        return super(RegistroEntradaView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if(self.recipientes):
+            context['object_list'] = self.recipientes
+        context['registroEntrada'] = self.registroEntrada
+        return context
 class RegistrosEntradaView(ListView):
     template_name = "listRegistrosEntrada.html"
     model = RegistroEntrada

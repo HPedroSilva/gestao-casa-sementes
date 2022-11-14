@@ -37,15 +37,15 @@
                     <tbody>
                         {% for registroentrada in object_list %}
                             <tr>
-                                <td><a href="{% url 'mainApp:recipientes' %}?registro={{ registroentrada.pk }}">{{ registroentrada.pk }}</a></td>
+                                <td><a title="Visualizar registro" href="{% url 'mainApp:registro_entrada' registroentrada.pk %}">{{ registroentrada.pk }}</a></td>
                                 <td>{{ registroentrada.variedade.nome }}</a></td>
                                 <td>{{ registroentrada.guardiao.nome }}</td>
                                 <td>{{ registroentrada.data|date:"d/m/Y" }}</td>
                                 <td>{{ registroentrada.enderecoGuardiao.estado }}</td>
                                 <td>{{ registroentrada.enderecoGuardiao.comunidade }}</td>
                                 <td>
-                                    <a href="{% url 'mainApp:etiquetas_registro_entrada' registroentrada.pk %} "><i class="fas fa-print fa-md text-white-80"></i></a>
-                                    <a href="{% url 'admin:mainApp_registroentrada_change' registroentrada.pk %}?registro={{ registroentrada.pk }}"><i class="fas fa-edit fa-md text-white-80"></i></a>
+                                    <a title="Imprimir etiqueta" href="{% url 'mainApp:etiquetas_registro_entrada' registroentrada.pk %} "><i class="fas fa-print fa-md text-white-80"></i></a>
+                                    <a title="Editar" href="{% url 'admin:mainApp_registroentrada_change' registroentrada.pk %}?registro={{ registroentrada.pk }}"><i class="fas fa-edit fa-md text-white-80"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}
