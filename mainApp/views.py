@@ -162,6 +162,45 @@ class TestesView(TemplateView):
         context['testes'] = self.testes
         context['registroEntrada'] = self.registroEntrada
         return context
+class TestesUmidadeView(TemplateView):
+    template_name = "listTestes.html"
+
+    def get(self, request, *args, **kwargs):
+        self.testes = []
+        self.testes.extend(list(TesteUmidade.objects.all()))
+        return super(TestesUmidadeView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['testes'] = self.testes
+        context['tipoTestes'] = "umidade"
+        return context
+class TestesGerminacaoView(TemplateView):
+    template_name = "listTestes.html"
+
+    def get(self, request, *args, **kwargs):
+        self.testes = []
+        self.testes.extend(list(TesteGerminacao.objects.all()))
+        return super(TestesGerminacaoView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['testes'] = self.testes
+        context['tipoTestes'] = "germinação"
+        return context
+class TestesTransgeniaView(TemplateView):
+    template_name = "listTestes.html"
+
+    def get(self, request, *args, **kwargs):
+        self.testes = []
+        self.testes.extend(list(TesteTransgenia.objects.all()))
+        return super(TestesTransgeniaView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['testes'] = self.testes
+        context['tipoTestes'] = "transgenia"
+        return context
 class ConfiguracoesView(FormView):
     template_name = 'configuracoes.html'
     form_class = ConfiguracoesForm 

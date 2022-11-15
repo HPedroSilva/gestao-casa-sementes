@@ -12,6 +12,9 @@ urlpatterns = [
     path('registros-entrada/', login_required(views.RegistrosEntradaView.as_view()), name='registros_entrada'),
     path('recipientes/', login_required(views.RecipientesView.as_view()), name='recipientes'),
     path('testes/', login_required(views.TestesView.as_view()), name='testes'),
+    path('testes-umidade/', login_required(views.TestesUmidadeView.as_view()), name='testes_umidade'),
+    path('testes-germinacao/', login_required(views.TestesGerminacaoView.as_view()), name='testes_germinacao'),
+    path('testes-transgenia/', login_required(views.TestesTransgeniaView.as_view()), name='testes_transgenia'),
     path('configuracoes/', login_required(views.ConfiguracoesView.as_view()), name='configuracoes'),
     
     path('atualizar-qrcode-recipientes/', login_required(views.AtualizarQrcodeRecipientesView), name='atualizar_qrcode_recipientes'),

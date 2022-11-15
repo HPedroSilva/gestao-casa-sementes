@@ -1,6 +1,6 @@
 {% block listRecipientes %}
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Testes</h1>
+    <h1 class="h3 mb-2 text-gray-800">Testes {% if tipoTestes %}de {{ tipoTestes }}{% endif %}</h1>
     {% if registroEntrada %}
         <p class="mb-4">Lista dos testes do lote de registro de entrada: {{ registroEntrada }}</p>
     {% else %}
