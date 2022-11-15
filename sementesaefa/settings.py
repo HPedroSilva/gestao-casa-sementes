@@ -128,6 +128,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "conteudo", "static")
 STATIC_URL = 'static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "conteudo", "media")
 MEDIA_URL = 'media/'
+CONFIGURACOES_DEFAULT_FILE = os.path.join(BASE_DIR, "default-config.json")
+CONFIGURACOES_FILE = os.path.join(BASE_DIR, "conteudo", "config.json")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

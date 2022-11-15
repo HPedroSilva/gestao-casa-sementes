@@ -7,9 +7,10 @@ from django.shortcuts import get_object_or_404
 from mainApp.tools.leitura import jsonToLeituras, calcMedia
 from datetime import datetime, timedelta
 from mainApp.functions import getSementes, getUnidades
+from django.conf import settings
 import requests
 import json
-
+import os.path
 class RecipienteView(TemplateView):
     template_name = "recipiente.html"
     recipiente = None
@@ -131,10 +132,16 @@ class ConfiguracoesView(FormView):
     form_class = ConfiguracoesForm 
     success_url = '/mainapp/configuracoes'
 
+    configuracoesFileEscrita = settings.CONFIGURACOES_FILE    
+    if os.path.isfile(settings.CONFIGURACOES_FILE):
+        configuracoesFileLeitura = settings.CONFIGURACOES_FILE
+    else:
+        configuracoesFileLeitura = settings.CONFIGURACOES_DEFAULT_FILE
+
     def get_initial(self):
         initial = super().get_initial()
 
-        with open("config.json") as jsonConfiguracoes:
+        with open(self.configuracoesFileLeitura) as jsonConfiguracoes:
             configuracoes = json.load(jsonConfiguracoes)
 
         initial["temperaturaMin"] =  configuracoes["temperaturaMin"]
@@ -161,7 +168,7 @@ class ConfiguracoesView(FormView):
         configuracoes["freqTesteTransgenia"] = data["freqTesteTransgenia"]
         configuracoes["urlAPI"] = data["urlAPI"]
 
-        with open("config.json", "w") as jsonConfiguracoes:
+        with open(self.configuracoesFileEscrita, "w") as jsonConfiguracoes:
             json.dump(configuracoes, jsonConfiguracoes)
 
         return super().form_valid(form)
