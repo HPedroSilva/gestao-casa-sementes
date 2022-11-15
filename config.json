@@ -1,0 +1,1 @@
+{"temperaturaMin": 20.0, "temperaturaMax": 27.0, "umidadeMax": 50.0, "umidadeMin": 30.0, "freqTesteUmidade": 1, "freqTesteGerminacao": 360, "freqTesteTransgenia": 0, "urlAPI": "http://localhost:3000"}

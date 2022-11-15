@@ -8,6 +8,7 @@ from mainApp.tools.leitura import jsonToLeituras, calcMedia
 from datetime import datetime, timedelta
 from mainApp.functions import getSementes, getUnidades
 import requests
+import json
 
 class RecipienteView(TemplateView):
     template_name = "recipiente.html"
@@ -132,11 +133,35 @@ class ConfiguracoesView(FormView):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial['temperaturaMax'] = 999.9
+
+        with open("config.json") as jsonConfiguracoes:
+            configuracoes = json.load(jsonConfiguracoes)
+
+        initial["temperaturaMin"] =  configuracoes["temperaturaMin"]
+        initial["temperaturaMax"] = configuracoes["temperaturaMax"]
+        initial["umidadeMax"] = configuracoes["umidadeMax"]
+        initial["umidadeMin"] = configuracoes["umidadeMin"]
+        initial["freqTesteUmidade"] = configuracoes["freqTesteUmidade"]
+        initial["freqTesteGerminacao"] = configuracoes["freqTesteGerminacao"]
+        initial["freqTesteTransgenia"] = configuracoes["freqTesteTransgenia"]
+        initial["urlAPI"] = configuracoes["urlAPI"]
 
         return initial
     
     def form_valid(self, form):
-        print("Salvando arquivo")
-        
+        data = form.cleaned_data
+
+        configuracoes = {}
+        configuracoes["temperaturaMin"] =  float(data["temperaturaMin"])
+        configuracoes["temperaturaMax"] = float(data["temperaturaMax"])
+        configuracoes["umidadeMax"] = float(data["umidadeMax"])
+        configuracoes["umidadeMin"] = float(data["umidadeMin"])
+        configuracoes["freqTesteUmidade"] = data["freqTesteUmidade"]
+        configuracoes["freqTesteGerminacao"] = data["freqTesteGerminacao"]
+        configuracoes["freqTesteTransgenia"] = data["freqTesteTransgenia"]
+        configuracoes["urlAPI"] = data["urlAPI"]
+
+        with open("config.json", "w") as jsonConfiguracoes:
+            json.dump(configuracoes, jsonConfiguracoes)
+
         return super().form_valid(form)
