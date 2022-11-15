@@ -41,8 +41,9 @@
                                 <td>{{ recipiente.unidade.nome }}</td>
                                 <td>{{ recipiente.posicao }}</td>
                                 <td>
-                                    <a href="{% url 'mainApp:etiqueta_recipiente' recipiente.pk %}"><i class="fas fa-print fa-md text-white-80"></i></a>
-                                    <a href="{% url 'admin:mainApp_recipiente_change' recipiente.pk %}"><i class="fas fa-edit fa-md text-white-80"></i></a>
+                                    <a href="{% url 'mainApp:etiqueta_recipiente' recipiente.pk %}" title="Imprimir etiqueta do recipiente."><i class="fas fa-print fa-md text-white-80"></i></a>
+                                    <a href="{% url 'admin:mainApp_recipiente_change' recipiente.pk %}" title="Editar informações do recipiente."><i class="fas fa-edit fa-md text-white-80"></i></a>
+                                    <a href="" onclick="atualizarQrCodes('{{ recipiente.pk }}')" title="Gerar novo QrCode para o recipiente."><i class="fas fa-qrcode"></i></a>
                                 </td>
                                 {% comment %} <td>{{ recipiente.qrcode url }}</td> {% endcomment %}
                             </tr>

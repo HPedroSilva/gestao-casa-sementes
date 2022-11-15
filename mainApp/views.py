@@ -9,6 +9,8 @@ from mainApp.tools.leitura import jsonToLeituras, calcMedia
 from datetime import datetime, timedelta
 from mainApp.functions import getSementes, getUnidades
 from django.conf import settings
+from django.http import HttpResponse
+from django.urls import reverse
 import requests
 import json
 import os.path
@@ -175,3 +177,12 @@ class ConfiguracoesView(FormView):
         messages.success(self.request, 'Configurações atualizadas com sucesso!')
 
         return super().form_valid(form)
+        
+def AtualizarQrcodeRecipientesView(request):
+    if request.GET['recipientes']:
+        stringRecipientes = request.GET['recipientes']
+        recipientesList = list(map(int, stringRecipientes.split(',')))
+        recipientes = Recipiente.objects.filter(pk__in = recipientesList)
+        for recipiente in recipientes:
+            recipiente.gerarQrCode(request.build_absolute_uri(reverse('mainApp:recipiente', args=[recipiente.id])))
+    return HttpResponse(status=200)

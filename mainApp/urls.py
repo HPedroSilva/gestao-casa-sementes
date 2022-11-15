@@ -12,4 +12,6 @@ urlpatterns = [
     path('registros-entrada/', login_required(views.RegistrosEntradaView.as_view()), name='registros_entrada'),
     path('recipientes/', login_required(views.RecipientesView.as_view()), name='recipientes'),
     path('configuracoes/', login_required(views.ConfiguracoesView.as_view()), name='configuracoes'),
+    
+    path('atualizar-qrcode-recipientes/', login_required(views.AtualizarQrcodeRecipientesView), name='atualizar_qrcode_recipientes'),
 ]

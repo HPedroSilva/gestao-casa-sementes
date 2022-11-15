@@ -397,5 +397,27 @@
     <script type="text/javascript" src="{% static '/mainApp/vendor/datatables/jquery.dataTables.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/mainApp/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/mainApp/js/demo/datatables-demo.js' %}"></script>
+
+    <!-- Atualizar QrCode recipientes script -->
+    <script type="text/javascript">
+        function alertDone(response){
+            console.log("QrCodes Atualizados " + response);
+        }
+        
+        function httpGetAsync(url, callback){
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET", url, true); // true for asynchronous 
+            xmlHttp.send(null);
+        }
+
+        function atualizarQrCodes(recipientes){
+            var urlAtualizarQrCodes = "{% url 'mainApp:atualizar_qrcode_recipientes' %}" + "?recipientes=" + recipientes;
+            httpGetAsync(urlAtualizarQrCodes, alertDone);
+        }
+    </script>
 </body>
 </html>
