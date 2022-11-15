@@ -1,6 +1,7 @@
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView
+from django.contrib import messages
 from mainApp.models import Recipiente, RegistroEntrada
 from mainApp.forms import ConfiguracoesForm
 from django.shortcuts import get_object_or_404
@@ -170,5 +171,7 @@ class ConfiguracoesView(FormView):
 
         with open(self.configuracoesFileEscrita, "w") as jsonConfiguracoes:
             json.dump(configuracoes, jsonConfiguracoes)
+
+        messages.success(self.request, 'Configurações atualizadas com sucesso!')
 
         return super().form_valid(form)
