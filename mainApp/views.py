@@ -1,6 +1,8 @@
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
+from django.views.generic.edit import FormView
 from mainApp.models import Recipiente, RegistroEntrada
+from mainApp.forms import ConfiguracoesForm
 from django.shortcuts import get_object_or_404
 from mainApp.tools.leitura import jsonToLeituras, calcMedia
 from datetime import datetime, timedelta
@@ -123,3 +125,18 @@ class RecipientesView(ListView):
             context['object_list'] = self.recipientes
         context['registroEntrada'] = self.registroEntrada
         return context
+class ConfiguracoesView(FormView):
+    template_name = 'configuracoes.html'
+    form_class = ConfiguracoesForm 
+    success_url = '/mainapp/configuracoes'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['temperaturaMax'] = 999.9
+
+        return initial
+    
+    def form_valid(self, form):
+        print("Salvando arquivo")
+        
+        return super().form_valid(form)

@@ -11,4 +11,5 @@ urlpatterns = [
     path('registro-entrada/<int:id_registro>/', login_required(views.RegistroEntradaView.as_view()), name='registro_entrada'),
     path('registros-entrada/', login_required(views.RegistrosEntradaView.as_view()), name='registros_entrada'),
     path('recipientes/', login_required(views.RecipientesView.as_view()), name='recipientes'),
+    path('configuracoes/', login_required(views.ConfiguracoesView.as_view()), name='configuracoes'),
 ]
