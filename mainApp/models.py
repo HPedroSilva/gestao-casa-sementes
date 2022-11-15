@@ -157,6 +157,20 @@ class TesteTransgenia(Teste):
     class Meta:
         verbose_name = "teste de transgenia"
         verbose_name_plural = "testes de transgenia"
+    
+    @property
+    def tipo(self):
+        return "transgenia"
+    
+    @property
+    def tipoVerbose(self):
+        return "Transgenia"
+
+    @property
+    def resultadoVerbose(self):
+        if self.resultado:
+            return "Positivo"
+        return "Negativo"
 class TesteUmidade(Teste):
     resultado = models.DecimalField(max_digits=5, decimal_places=2)
 
@@ -165,6 +179,14 @@ class TesteUmidade(Teste):
     class Meta:
         verbose_name = "teste de umidade"
         verbose_name_plural = "testes de umidade"
+
+    @property
+    def tipo(self):
+        return "umidade"
+
+    @property
+    def tipoVerbose(self):
+        return "Umidade"
 class TesteGerminacao(Teste):
     resultado = models.DecimalField(max_digits=5, decimal_places=2)
 
@@ -173,3 +195,11 @@ class TesteGerminacao(Teste):
     class Meta:
         verbose_name = "teste de germinação"
         verbose_name_plural = "testes de germinação"
+    
+    @property
+    def tipo(self):
+        return "germinacao"
+    
+    @property
+    def tipoVerbose(self):
+        return "Germinação"

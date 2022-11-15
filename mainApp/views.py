@@ -2,7 +2,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView
 from django.contrib import messages
-from mainApp.models import Recipiente, RegistroEntrada
+from mainApp.models import Recipiente, RegistroEntrada, TesteUmidade, TesteTransgenia, TesteGerminacao
 from mainApp.forms import ConfiguracoesForm
 from django.shortcuts import get_object_or_404
 from mainApp.tools.leitura import jsonToLeituras, calcMedia
@@ -112,6 +112,7 @@ class RegistroEntradaView(TemplateView):
 class RegistrosEntradaView(ListView):
     template_name = "listRegistrosEntrada.html"
     model = RegistroEntrada
+
 class RecipientesView(ListView):
     template_name = "listRecipientes.html"
     model = Recipiente
@@ -128,6 +129,28 @@ class RecipientesView(ListView):
         context = super().get_context_data(**kwargs)
         if(self.recipientes):
             context['object_list'] = self.recipientes
+        context['registroEntrada'] = self.registroEntrada
+        return context
+class TestesView(TemplateView):
+    template_name = "listTestes.html"
+    registroEntrada = RegistroEntrada.objects.none
+    
+    def get(self, request, *args, **kwargs):
+        self.testes = []
+        pkRegistroEntrada = int(request.GET.get('registro', 0))
+        if(pkRegistroEntrada):
+            self.testes.extend(list(TesteGerminacao.objects.filter(registroEntrada__id=pkRegistroEntrada)))
+            self.testes.extend(list(TesteTransgenia.objects.filter(registroEntrada__id=pkRegistroEntrada)))
+            self.testes.extend(list(TesteUmidade.objects.filter(registroEntrada__id=pkRegistroEntrada)))
+        else:
+            self.testes.extend(list(TesteGerminacao.objects.all()))
+            self.testes.extend(list(TesteTransgenia.objects.all()))
+            self.testes.extend(list(TesteUmidade.objects.all()))
+        return super(TestesView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['testes'] = self.testes
         context['registroEntrada'] = self.registroEntrada
         return context
 class ConfiguracoesView(FormView):
