@@ -2,15 +2,19 @@ from django import forms
 
 class ConfiguracoesForm(forms.Form):
 
-    # temperatura máx e min
-    # umidade máx e min
-    # frequencia de teste de umidade, germinacao e trangenia
-    # endereço da API
-    temperaturaMax = forms.DecimalField(label="Temperatura Máxima")
-    temperaturaMin = forms.DecimalField()
-    umidadeMax = forms.DecimalField()
-    umidadeMin = forms.DecimalField()
-    freqTesteUmidade = forms.IntegerField(max_value=10)
-    freqTesteGerminacao = forms.IntegerField()
-    freqTesteTransgenia = forms.IntegerField()
-    urlAPI = forms.URLField()
+    temperaturaMax = forms.DecimalField(label="Temperatura Máxima: ")
+    temperaturaMin = forms.DecimalField(label="Temperatura Mínima: ")
+    umidadeMax = forms.DecimalField(label="Umidade Máxima: ")
+    umidadeMin = forms.DecimalField(label="Umidade Mínima: ")
+    freqTesteUmidade = forms.IntegerField(label="Frequência do teste de umidade: ", max_value=10)
+    freqTesteGerminacao = forms.IntegerField(label="Frequência do teste de germinação: ")
+    freqTesteTransgenia = forms.IntegerField(label="Frequência do teste de trangenia: ")
+    urlAPI = forms.URLField(label="URL para a API do sistema de monitoramento: ")
+
+    def __init__(self, *args, **kwargs):
+        super(ConfiguracoesForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            if field not in self.errors:
+                self.fields[field].widget.attrs.update({'class': 'form-control'})
+            else:
+                self.fields[field].widget.attrs.update({'class': 'form-control is-invalid'})

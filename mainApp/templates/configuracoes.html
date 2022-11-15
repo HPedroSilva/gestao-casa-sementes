@@ -1,8 +1,95 @@
 {% extends "base.html" %}
 {% block content %}
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
-        {{form}}
-        <input type="submit">
+
+        <div class="alert alert-danger lert-dismissible fade show {% if form.non_field_errors %}d-block {% else %}d-none{% endif %}" role="alert">
+            <div class="row">
+                <div class="col-sm-11">
+                    {{ form.non_field_errors }}
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.temperaturaMax.id_for_label }}" class="col-sm-2 col-form-label is-invalid">{{ form.temperaturaMax.label }}</label>
+            <div class="col-sm-10">
+                {{ form.temperaturaMax }}
+                <div class="invalid-feedback">
+                    {{ form.temperaturaMax.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.temperaturaMin.id_for_label }}" class="col-sm-2 col-form-label">{{ form.temperaturaMin.label }}</label>
+            <div class="col-sm-10">
+                {{ form.temperaturaMin }}
+                <div class="invalid-feedback">
+                    {{ form.temperaturaMin.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.umidadeMax.id_for_label }}" class="col-sm-2 col-form-label is-invalid">{{ form.umidadeMax.label }}</label>
+            <div class="col-sm-10">
+                {{ form.umidadeMax }}
+                <div class="invalid-feedback">
+                    {{ form.umidadeMax.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.umidadeMin.id_for_label }}" class="col-sm-2 col-form-label">{{ form.umidadeMin.label }}</label>
+            <div class="col-sm-10">
+                {{ form.umidadeMin }}
+                <div class="invalid-feedback">
+                    {{ form.umidadeMin.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.freqTesteUmidade.id_for_label }}" class="col-sm-2 col-form-label">{{ form.freqTesteUmidade.label }}</label>
+            <div class="col-sm-10">
+                {{ form.freqTesteUmidade }}
+                <div class="invalid-feedback">
+                    {{ form.freqTesteUmidade.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.freqTesteGerminacao.id_for_label }}" class="col-sm-2 col-form-label">{{ form.freqTesteGerminacao.label }}</label>
+            <div class="col-sm-10">
+                {{ form.freqTesteGerminacao }}
+                <div class="invalid-feedback">
+                    {{ form.freqTesteGerminacao.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.freqTesteTransgenia.id_for_label }}" class="col-sm-2 col-form-label">{{ form.freqTesteTransgenia.label }}</label>
+            <div class="col-sm-10">
+                {{ form.freqTesteTransgenia }}
+                <div class="invalid-feedback">
+                    {{ form.freqTesteTransgenia.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.urlAPI.id_for_label }}" class="col-sm-2 col-form-label">{{ form.urlAPI.label }}</label>
+            <div class="col-sm-10">
+                {{ form.urlAPI }}
+                <div class="invalid-feedback">
+                    {{ form.urlAPI.errors }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-success" type="submit"><i class="fas fa-save"> Salvar</i></button>
+        </div>
     </form>
 {% endblock content %}
