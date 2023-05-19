@@ -136,4 +136,4 @@ CONFIGURACOES_FILE = os.path.join(BASE_DIR, "conteudo", "config.json")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 API_URL = "http://localhost:3000/"
-KRONOS_PREFIX = 'source /mnt/h/Projeto AEFA/sementesAEFA/virtual-linux-sementesaefa/bin/activate && '
+# KRONOS_PREFIX = 'source /bin/activate && ' # Caminho para ativação do ambiente virtual do projeto
